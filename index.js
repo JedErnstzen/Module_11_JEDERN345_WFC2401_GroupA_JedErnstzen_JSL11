@@ -105,7 +105,7 @@ function refreshTasksUI() {
 function styleActiveBoard(boardName) {
   document.querySelectorAll('.board-btn').forEach(btn => { 
     
-    if(btn.textContent === boardName) {
+    if(btn.textContent === activeBoard) {
       btn.classList.add('active'); 
     }
     else {
