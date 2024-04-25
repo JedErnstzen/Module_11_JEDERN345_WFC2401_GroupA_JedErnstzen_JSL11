@@ -1,3 +1,5 @@
+// Part 1 : Modularization with Imports
+
 // Import helper functions from utils
 import { createNewTask, deleteTask, getTasks, putTask } from "./utils/taskFunctions.js";
 // Import initialData
@@ -14,6 +16,8 @@ function initializeData() {
     console.log("Data already exists in localStorage"); // Log a message if data already exists
   }
 }
+
+// Part 2 calling the initialize Data and getting the elements
 
 initializeData(); // Call function to initialize data
 
@@ -55,8 +59,6 @@ function fetchAndDisplayBoardsAndTasks() {
     // Ensure activeBoard is correctly set before adding a new task
     activeBoard = elements.headerBoardName.textContent; // Set active board
   });
-
-  // Other code...
 
 }
 
@@ -262,24 +264,44 @@ function openEditTaskModal(task) { // Function to open edit task modal
 }
 
 function saveTaskChanges(taskId) { // Function to save task changes
+  // Get new user inputs
   const updatedTitle = document.getElementById("edit-task-title-input").value; // Get updated title
   const updatedDescription = document.getElementById("edit-task-desc-input").value; // Get updated description
   const updatedStatus = document.getElementById("edit-select-status").value; // Get updated status
 
-  const updatedTask = { // Create updated task object
-    id: taskId, // Set task ID
-    title: updatedTitle, // Set updated title
-    description: updatedDescription, // Set updated description
-    status: updatedStatus, // Set updated status
-    board: activeBoard // Set active board
-  };
+  // Get the tasks from local storage
+  let tasks = getTasks();
 
-  putTask(updatedTask); // Save the changes to the task
+  // Check if a task with the same ID already exists
+  const duplicatedTaskIndex = tasks.findIndex(task => task.id === taskId);
 
-  // Refresh the UI
-  refreshTasksUI(); // Refresh tasks UI
+  if (duplicatedTaskIndex !== -1) {
+    // If the task already exists, update its properties
+    tasks[duplicatedTaskIndex].title = updatedTitle;
+    tasks[duplicatedTaskIndex].description = updatedDescription;
+    tasks[duplicatedTaskIndex].status = updatedStatus;
+  } else {
+    // If the task doesn't exist, create a new task object
+    const newTask = {
+      id: taskId,
+      title: updatedTitle,
+      description: updatedDescription,
+      status: updatedStatus
+    };
 
-  toggleModal(false, elements.editTaskModal); // Close the edit task modal
+    // Add the new task to the tasks array
+    tasks.push(newTask);
+  }
+
+  // Save the updated tasks array back to local storage
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+
+  // Invoke putTask to update the Database
+  putTask(tasks[duplicatedTaskIndex]);
+
+  refreshTasksUI(); // Refresh the UI to reflect the changes
+
+  toggleModal(false, elements.editTaskModal); // Close the modal
 }
 
 document.addEventListener('DOMContentLoaded', function () { // Add event listener for DOMContentLoaded event
