@@ -1,4 +1,4 @@
-// Part 1 : Modularization with Imports
+// Section 1: Imports and Initialization
 
 // Import helper functions from utils
 import { createNewTask, deleteTask, getTasks, putTask } from "./utils/taskFunctions.js";
@@ -17,9 +17,10 @@ function initializeData() {
   }
 }
 
-// Part 2 calling the initialize Data and getting the elements
 
 initializeData(); // Call function to initialize data
+
+// Section 2: DOM Elements and Global Variable
 
 // Get elements from the DOM
 const elements = {
@@ -38,6 +39,8 @@ const elements = {
 console.log(elements.editTaskModal); // Log edit task modal element
 
 let activeBoard = ""; // Declare variable to store active board
+
+// Section 3: Task Management
 
 // Fetches and displays boards and tasks
 function fetchAndDisplayBoardsAndTasks() {
@@ -117,6 +120,8 @@ function addTaskToUI(task) { // Function to add task to UI
   localStorage.setItem("tasks", JSON.stringify(initialData)); // Update tasks data in local storage
 }
 
+// Section 4: Board Management
+
 // Creates different boards in the DOM
 function displayBoards(boards) { // Function to display boards
   const sidebar = document.getElementById("boards-nav-links-div"); // Select sidebar element
@@ -182,6 +187,8 @@ function styleActiveBoard(boardName) { // Function to style active board
   });
 }
 
+// Section 5: Event Handling
+
 function setupEventListeners() { // Function to set up event listeners
   const cancelEditBtn = document.getElementById('cancel-edit-btn'); // Select cancel edit button
   cancelEditBtn.addEventListener('click', function () { // Add event listener for clicking on cancel edit button
@@ -235,6 +242,8 @@ function toggleTheme() { // Function to toggle theme
   body.classList.toggle("dark-theme"); // Toggle dark theme class
   body.classList.toggle("light-theme"); // Toggle light theme class
 }
+
+// Section 6: Task Editing
 
 function openEditTaskModal(task) { // Function to open edit task modal
   const titleInput = document.getElementById("edit-task-title-input"); // Select edit task title input
@@ -303,6 +312,8 @@ function saveTaskChanges(taskId) { // Function to save task changes
 
   toggleModal(false, elements.editTaskModal); // Close the modal
 }
+
+// Section 7: Initialization and Entry Point
 
 document.addEventListener('DOMContentLoaded', function () { // Add event listener for DOMContentLoaded event
   init(); // Call init function
